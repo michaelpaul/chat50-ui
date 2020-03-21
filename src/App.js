@@ -13,12 +13,12 @@ import {
   Input
 } from 'antd';
 
-import { login, logout, authenticate, getCurrentUser } from './auth';
+import { authenticate, getCurrentUser } from './auth';
+import Profile from './Profile';
 
 import {
   BorderlessTableOutlined,
-  ArrowRightOutlined,
-  UserOutlined
+  ArrowRightOutlined
 } from "@ant-design/icons";
 import './App.css';
 
@@ -84,38 +84,6 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     </Form>
   </div>
 );
-
-class Profile extends React.Component {
-  handleClick = () => {
-    if (this.props.isAuthenticated) {
-      logout();
-    } else {
-      login();
-    }
-  }
-
-  render() {
-    const isAuthenticated = this.props.isAuthenticated;
-    return (
-      <Row style={{ padding: "12px", height: "64px" }}>
-        <Col span={6}>
-          {isAuthenticated ? (
-            <Avatar src={this.props.user.picture} />
-          ) : (
-              <Avatar icon={<UserOutlined />} />
-            )}
-        </Col>
-        <Col span={16}>
-          <p style={{ color: "white" }}>
-            {isAuthenticated ? this.props.user.name : "Guest"}
-            <br />
-            <a href="/" onClick={this.handleClick}>{isAuthenticated ? "Logout" : "Login"}</a>
-          </p>
-        </Col>
-      </Row>
-    );
-  }
-}
 
 class App extends React.Component {
   state = {
