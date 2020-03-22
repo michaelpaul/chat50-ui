@@ -17,6 +17,7 @@ const MessageList = ({ comments }) => {
                         author={sameAuthor ? null : props.author}
                         avatar={
                             <Avatar
+                                alt="Author Avatar"
                                 src={props.avatar}
                                 style={{ visibility: sameAuthor ? "hidden" : "" }}
                             />

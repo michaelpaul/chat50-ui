@@ -57,7 +57,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 class App extends React.Component {
   state = {
-    comments: [makeMessage("foo"), makeMessage("bar")],
+    comments: [],
     submitting: false,
     value: "",
     isAuthenticated: false,

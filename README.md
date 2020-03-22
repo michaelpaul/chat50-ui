@@ -1,3 +1,7 @@
+# Chat50 UI &middot; ![Node.js CI](https://github.com/michaelpaul/chat50-ui/workflows/Node.js%20CI/badge.svg)
+
+Chat User Interface based on React. 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

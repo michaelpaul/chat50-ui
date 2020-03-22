@@ -29,3 +29,23 @@ test('renders messages', () => {
     expect(getByText('Rinoa?', { exact: false })).toBeTruthy();
     expect(getByText(/interested/)).toBeTruthy();
 });
+
+test('hide avatar in sequence', () => {
+    const comments = [
+        {
+            author: "Squall",
+            avatar: "/8.png",
+            content: 'Did you see Rinoa?',
+            datetime: 'few sencods ago'
+        },
+        {
+            author: "Squall",
+            avatar: "/8.png",
+            content: 'Please?',
+            datetime: 'right after'
+        }
+    ];
+    const { getAllByAltText } = render(<MessageList comments={comments} />);
+
+    expect(getAllByAltText('Author Avatar')[1]).not.toBeVisible();
+});
