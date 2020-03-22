@@ -1,20 +1,18 @@
 import React from 'react';
 import moment from 'moment';
 import {
-  Avatar,
   Row,
   Col,
   Layout,
   Menu,
-  Comment,
   Form,
   Button,
-  List,
   Input
 } from 'antd';
 
 import { authenticate, getCurrentUser } from './auth';
 import Profile from './Profile';
+import MessageList from './MessageList';
 
 import {
   BorderlessTableOutlined,
@@ -32,34 +30,6 @@ function makeMessage(body) {
     datetime: moment().fromNow()
   };
 }
-
-const CommentList = ({ comments }) => {
-  let lastAuthor = null;
-  return (
-    <List
-      dataSource={comments}
-      itemLayout="horizontal"
-      renderItem={props => {
-        let sameAuthor = props.avatar === lastAuthor;
-        lastAuthor = props.avatar;
-
-        return (
-          <Comment
-            content={props.content}
-            author={sameAuthor ? null : props.author}
-            avatar={
-              <Avatar
-                src={props.avatar}
-                style={{ visibility: sameAuthor ? "hidden" : "" }}
-              />
-            }
-            datetime={sameAuthor ? null : props.datetime}
-          />
-        );
-      }}
-    />
-  );
-};
 
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <div>
@@ -167,7 +137,7 @@ class App extends React.Component {
           </Header>
             <Content style={{ margin: "24px 16px 0", overflow: "scroll" }}>
               <div style={{ padding: 24, background: "#fff" }}>
-                <CommentList comments={comments} />
+                <MessageList comments={comments} />
               </div>
             </Content>
             <Footer>
