@@ -1,23 +1,13 @@
 import React from 'react';
 import moment from 'moment';
-import {
-  Row,
-  Col,
-  Layout,
-  Menu,
-  Form,
-  Button,
-  Input
-} from 'antd';
+import { Layout, Menu } from 'antd';
 
 import { authenticate, getCurrentUser } from './auth';
 import Profile from './Profile';
 import MessageList from './MessageList';
+import Editor from './Editor';
 
-import {
-  BorderlessTableOutlined,
-  ArrowRightOutlined
-} from "@ant-design/icons";
+import { BorderlessTableOutlined } from "@ant-design/icons";
 import './App.css';
 
 const { Content, Sider, Header, Footer } = Layout;
@@ -30,30 +20,6 @@ function makeMessage(body) {
     datetime: moment().fromNow()
   };
 }
-
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
-  <div>
-    <Form>
-      <Form.Item>
-        <Row gutter={8}>
-          <Col span={22}>
-            <Input onChange={onChange} value={value} />
-          </Col>
-          <Col span={2}>
-            <Button
-              htmlType="submit"
-              type="primary"
-              shape="circle"
-              icon={<ArrowRightOutlined />}
-              loading={submitting}
-              onClick={onSubmit}
-            />
-          </Col>
-        </Row>
-      </Form.Item>
-    </Form>
-  </div>
-);
 
 class App extends React.Component {
   state = {
