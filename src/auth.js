@@ -1,54 +1,50 @@
 import createAuth0Client from '@auth0/auth0-spa-js';
 import authConfig from './auth_config.json';
 
-let auth0 = null;
+export const configureClient = async () => await createAuth0Client({
+  domain: authConfig.domain,
+  client_id: authConfig.clientId
+});
 
-const configureClient = async () => {
-  auth0 = await createAuth0Client({
-    domain: authConfig.domain,
-    client_id: authConfig.clientId
-  });
-};
+export class Auth {
+  constructor(client) {
+    this.client = client;
+  }
 
-export const getCurrentUser = async () => {
-  return await auth0.getUser();
-};
+  async getCurrentUser() {
+    return await this.client.getUser();
+  }
 
-export const login = async () => {
-  console.log('login with redir');
-
-  await auth0.loginWithRedirect({
-    redirect_uri: window.location.origin
-  });
-};
-
-export const logout = async () => {
-  try {
-    if (!(await auth0.isAuthenticated())) {
-      console.log('nem ta logado');
-      return;
-    }
-    auth0.logout({
-      returnTo: window.location.origin
+  async login() {
+    await this.client.loginWithRedirect({
+      redirect_uri: window.location.origin
     });
-  } catch (e) {
-    console.log(auth0, 'logout error', e);
   }
-};
 
-export const authenticate = async () => {
-  await configureClient();
-
-  const query = window.location.search;
-  if (query.includes("code=") && query.includes("state=")) {
+  async logout() {
     try {
-      await auth0.handleRedirectCallback();
-      // Use replaceState to redirect the user away and remove the querystring parameters
-      window.history.replaceState({}, document.title, "/");
-    } catch (err) {
-      console.error("Error parsing redirect:", err);
+      if (!await this.client.isAuthenticated()) {
+        return;
+      }
+      this.client.logout({
+        returnTo: window.location.origin
+      });
+    } catch (e) {
+      console.log('Logout error', e);
     }
   }
 
-  return await auth0.isAuthenticated();
-};
+  async authenticate() {
+    const query = window.location.search;
+    if (query.includes("code=") && query.includes("state=")) {
+      try {
+        await this.client.handleRedirectCallback();
+        // Use replaceState to redirect the user away and remove the querystring parameters
+        window.history.replaceState({}, document.title, "/");
+      } catch (err) {
+        console.error("Error parsing redirect", err);
+      }
+    }
+    return await this.client.isAuthenticated();
+  }
+}

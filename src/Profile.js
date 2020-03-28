@@ -2,14 +2,12 @@ import React from 'react';
 import { Avatar, Row, Col } from 'antd';
 import { UserOutlined } from "@ant-design/icons";
 
-import { login, logout } from './auth';
-
 export default class Profile extends React.Component {
     handleClick = () => {
         if (this.props.isAuthenticated) {
-            logout();
+            this.props.onLogout();
         } else {
-            login();
+            this.props.onLogin();
         }
     }
 

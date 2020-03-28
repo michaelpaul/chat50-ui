@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { Layout, Menu } from 'antd';
 
-import { authenticate, getCurrentUser } from './auth';
+import { configureClient, Auth } from './auth';
 import Profile from './Profile';
 import MessageList from './MessageList';
 import Editor from './Editor';
@@ -27,17 +27,29 @@ class App extends React.Component {
     submitting: false,
     value: "",
     isAuthenticated: false,
-    user: null
+    user: null,
+    auth: null
   };
 
   async componentDidMount() {
-    const isAuthenticated = await authenticate();
+    const client = await configureClient();
+    const auth = new Auth(client);
+    const isAuthenticated = await auth.authenticate();
+    this.setState({ auth: auth });
     if (isAuthenticated) {
       this.setState({
         isAuthenticated: true,
-        user: await getCurrentUser()
+        user: await auth.getCurrentUser()
       });
     }
+  }
+
+  handleLogin = async () => {
+    await this.state.auth.login();
+  }
+
+  handleLogout = async () => {
+    await this.state.auth.logout();
   }
 
   handleSubmit = () => {
@@ -81,7 +93,7 @@ class App extends React.Component {
               left: 0
             }}
           >
-            <Profile user={this.state.user} isAuthenticated={this.state.isAuthenticated} />
+            <Profile user={this.state.user} isAuthenticated={this.state.isAuthenticated} onLogin={this.handleLogin} onLogout={this.handleLogout} />
             <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
               <Menu.Item key="1">
                 <BorderlessTableOutlined />

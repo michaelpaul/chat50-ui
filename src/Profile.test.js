@@ -2,9 +2,6 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
 import Profile from './Profile';
-import * as authMock from './auth';
-
-jest.mock('./auth');
 
 test('guest user', () => {
     const { getByText } = render(<Profile />);
@@ -14,11 +11,12 @@ test('guest user', () => {
 });
 
 test('guest login', () => {
-    const { getByText } = render(<Profile />);
+    const handleLogin = jest.fn();
+    const { getByText } = render(<Profile onLogin={handleLogin} />);
     
     fireEvent.click(getByText('Login'));
 
-    expect(authMock.login).toHaveBeenCalled();
+    expect(handleLogin).toHaveBeenCalled();
 });
 
 test('logged in user', () => {
@@ -32,9 +30,10 @@ test('logged in user', () => {
 
 test('logout', () => {
     const user = { picture: '/pic.jpg', name: 'John Constantine'};
-    const { getByText } = render(<Profile isAuthenticated={true} user={user} />);
+    const handleLogout = jest.fn();
+    const { getByText } = render(<Profile isAuthenticated={true} user={user} onLogout={handleLogout} />);
     
     fireEvent.click(getByText('Logout'));
 
-    expect(authMock.logout).toHaveBeenCalled();
+    expect(handleLogout).toHaveBeenCalled();
 });
