@@ -1,10 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-import { Layout, Menu } from 'antd';
+import { Layout } from 'antd';
 
 import { configureClient, Auth } from './auth';
 import Profile from './Profile';
 import MessageList from './MessageList';
+import ChannelList from './ChannelList';
 import Editor from './Editor';
 
 import { BorderlessTableOutlined } from "@ant-design/icons";
@@ -23,6 +24,8 @@ function makeMessage(body) {
 
 class App extends React.Component {
   state = {
+    channels: [],
+    currentChannel: null,
     comments: [],
     submitting: false,
     value: "",
@@ -81,6 +84,7 @@ class App extends React.Component {
 
   render() {
     const { comments, submitting, value } = this.state;
+    const currentChannel = this.state.channels.filter((c) => c.key === this.state.currentChannel);
 
     return (
       <div className="App">
@@ -94,25 +98,12 @@ class App extends React.Component {
             }}
           >
             <Profile user={this.state.user} isAuthenticated={this.state.isAuthenticated} onLogin={this.handleLogin} onLogout={this.handleLogout} />
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-              <Menu.Item key="1">
-                <BorderlessTableOutlined />
-                <span className="nav-text">pset1</span>
-              </Menu.Item>
-              <Menu.Item key="2">
-                <BorderlessTableOutlined />
-                <span className="nav-text">pset2</span>
-              </Menu.Item>
-              <Menu.Item key="3">
-                <BorderlessTableOutlined />
-                <span className="nav-text">pset3</span>
-              </Menu.Item>
-            </Menu>
+            <ChannelList channels={this.state.channels} />
           </Sider>
           <Layout style={{ marginLeft: 200, height: "100vh" }}>
             <Header style={{ background: "#fff" }}>
-              <BorderlessTableOutlined /> pset1
-          </Header>
+              <BorderlessTableOutlined /> { currentChannel.length ? currentChannel.name : 'Select a channel from the sidebar' }
+            </Header>
             <Content style={{ margin: "24px 16px 0", overflow: "scroll" }}>
               <div style={{ padding: 24, background: "#fff" }}>
                 <MessageList comments={comments} />
