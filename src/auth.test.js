@@ -22,6 +22,15 @@ test('getCurrentUser', async () => {
     expect(user).toEqual({ id: 128 });
 });
 
+test('getAuthToken', async () => {
+    const client = {
+        getTokenSilently: jest.fn(() => 'A long JWT')
+    };
+    const auth = new Auth(client);
+
+    expect(await auth.getAuthToken()).toBe('A long JWT');
+});
+
 test('login', async () => {
     const client = {
         loginWithRedirect: jest.fn()
@@ -52,7 +61,7 @@ test('authenticate', async () => {
     };
     const auth = new Auth(client);
 
-    const result = await auth.authenticate();
+    await auth.authenticate();
 
     expect(client.isAuthenticated).toHaveBeenCalled();
 });

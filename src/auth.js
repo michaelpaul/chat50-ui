@@ -3,7 +3,8 @@ import authConfig from './auth_config.json';
 
 export const configureClient = async () => await createAuth0Client({
   domain: authConfig.domain,
-  client_id: authConfig.clientId
+  client_id: authConfig.clientId,
+  audience: authConfig.audience
 });
 
 export class Auth {
@@ -13,6 +14,10 @@ export class Auth {
 
   async getCurrentUser() {
     return await this.client.getUser();
+  }
+
+  async getAuthToken() {
+    return await this.client.getTokenSilently();
   }
 
   async login() {
