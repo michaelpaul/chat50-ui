@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import { Layout } from 'antd';
 
 import { configureClient, Auth } from './auth';
@@ -7,20 +6,12 @@ import Profile from './Profile';
 import MessageList from './MessageList';
 import ChannelList from './ChannelList';
 import Editor from './Editor';
+import { postMessage } from "./api";
 
 import { BorderlessTableOutlined } from "@ant-design/icons";
 import './App.css';
 
 const { Content, Sider, Header, Footer } = Layout;
-
-function makeMessage(body) {
-  return {
-    author: "Mister Nice Guy",
-    avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    content: body,
-    datetime: moment().fromNow()
-  };
-}
 
 class App extends React.Component {
   state = {
@@ -38,7 +29,7 @@ class App extends React.Component {
     const client = await configureClient();
     const auth = new Auth(client);
     const isAuthenticated = await auth.authenticate();
-    this.setState({ auth: auth });
+    this.setState({ auth });
     if (isAuthenticated) {
       this.setState({
         isAuthenticated: true,
@@ -55,28 +46,24 @@ class App extends React.Component {
     await this.state.auth.logout();
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     if (!this.state.value) {
       return;
     }
 
-    let msg = this.state.value;
     this.setState({
       submitting: true
     });
 
-    setTimeout(() => {
-      this.state.comments.push(makeMessage(msg));
-      this.setState({
-        submitting: false,
-        value: "",
-        comments: this.state.comments
-      });
-    }, 250);
+    await postMessage(this.state.value, await this.state.auth.getAuthToken());
+    
+    this.setState({
+      submitting: false,
+      value: ""
+    });
   };
 
   handleChange = e => {
-    console.log("na mudanca", e.target.value, this);
     this.setState({
       value: e.target.value
     });
