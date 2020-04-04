@@ -6,7 +6,7 @@ import Profile from './Profile';
 import MessageList from './MessageList';
 import ChannelList from './ChannelList';
 import Editor from './Editor';
-import { postMessage } from "./api";
+import { getChannels, getMessages, postMessage } from "./api";
 
 import { BorderlessTableOutlined } from "@ant-design/icons";
 import './App.css';
@@ -17,19 +17,25 @@ class App extends React.Component {
   state = {
     channels: [],
     currentChannel: null,
-    comments: [],
+    messages: [],
     submitting: false,
     value: "",
     isAuthenticated: false,
     user: null,
     auth: null
-  };
+  }
 
   async componentDidMount() {
+    getChannels().then(channels => {
+      this.setState({ channels });
+      this.handleOpenChannel(channels[0].key);
+    });
+
     const client = await configureClient();
     const auth = new Auth(client);
     const isAuthenticated = await auth.authenticate();
     this.setState({ auth });
+
     if (isAuthenticated) {
       this.setState({
         isAuthenticated: true,
@@ -56,22 +62,29 @@ class App extends React.Component {
     });
 
     await postMessage(this.state.value, await this.state.auth.getAuthToken());
-    
+
     this.setState({
       submitting: false,
       value: ""
     });
-  };
+  }
 
   handleChange = e => {
     this.setState({
       value: e.target.value
     });
-  };
+  }
+
+  handleOpenChannel = (key) => {
+    const [currentChannel] = this.state.channels.filter(it => it.key === key);
+    if (currentChannel) {
+      this.setState({ currentChannel });
+      getMessages(currentChannel.key).then(messages => this.setState({ messages }));
+    }
+  }
 
   render() {
-    const { comments, submitting, value } = this.state;
-    const currentChannel = this.state.channels.filter((c) => c.key === this.state.currentChannel);
+    const { currentChannel, messages, submitting, value } = this.state;
 
     return (
       <div className="App">
@@ -85,15 +98,15 @@ class App extends React.Component {
             }}
           >
             <Profile user={this.state.user} isAuthenticated={this.state.isAuthenticated} onLogin={this.handleLogin} onLogout={this.handleLogout} />
-            <ChannelList channels={this.state.channels} />
+            <ChannelList channels={this.state.channels} onOpen={this.handleOpenChannel} />
           </Sider>
           <Layout style={{ marginLeft: 200, height: "100vh" }}>
             <Header style={{ background: "#fff" }}>
-              <BorderlessTableOutlined /> { currentChannel.length ? currentChannel.name : 'Select a channel from the sidebar' }
+              <BorderlessTableOutlined /> {currentChannel ? currentChannel.name : 'Select a channel from the sidebar'}
             </Header>
             <Content style={{ margin: "24px 16px 0", overflow: "scroll" }}>
               <div style={{ padding: 24, background: "#fff" }}>
-                <MessageList comments={comments} />
+                <MessageList comments={messages} />
               </div>
             </Content>
             <Footer>

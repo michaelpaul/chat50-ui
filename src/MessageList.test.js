@@ -14,13 +14,13 @@ test('renders messages', () => {
         {
             author: "Squall",
             avatar: "/8.png",
-            content: 'Did you see Rinoa?',
+            body: 'Did you see Rinoa?',
             datetime: 'few sencods ago'
         },
         {
             author: "Cloud",
             avatar: "/7.png",
-            content: 'Not interested.',
+            body: 'Not interested.',
             datetime: 'right after'
         }
     ];
@@ -40,7 +40,7 @@ test('hide avatar in sequence', () => {
         },
         {
             author: "Squall",
-            avatar: "/8.png",
+            avatar: "/9.png",
             content: 'Please?',
             datetime: 'right after'
         }

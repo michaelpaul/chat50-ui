@@ -3,8 +3,8 @@ export const getChannels = async () => {
     return await response.json();
 };
 
-export const getMessages = async () => {
-    const response = await fetch('http://localhost:5000/api/messages');
+export const getMessages = async (channel) => {
+    const response = await fetch(`http://localhost:5000/api/messages?channel=${channel}`);
     return await response.json();
 };
 

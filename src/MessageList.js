@@ -8,12 +8,12 @@ const MessageList = ({ comments }) => {
             dataSource={comments}
             itemLayout="horizontal"
             renderItem={props => {
-                let sameAuthor = props.avatar === lastAuthor;
-                lastAuthor = props.avatar;
+                let sameAuthor = props.author === lastAuthor;
+                lastAuthor = props.author;
 
                 return (
                     <Comment
-                        content={props.content}
+                        content={props.body}
                         author={sameAuthor ? null : props.author}
                         avatar={
                             <Avatar
