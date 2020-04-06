@@ -28,7 +28,10 @@ class App extends React.Component {
   async componentDidMount() {
     getChannels().then(channels => {
       this.setState({ channels });
-      this.handleOpenChannel(channels[0].key);
+      const [first] = channels;
+      if (first) {
+        this.handleOpenChannel(first.key);
+      }
     });
 
     const client = await configureClient();
@@ -61,7 +64,11 @@ class App extends React.Component {
       submitting: true
     });
 
-    await postMessage(this.state.value, await this.state.auth.getAuthToken());
+    await postMessage(
+      this.state.currentChannel.key,
+      this.state.value,
+      await this.state.auth.getAuthToken()
+    );
 
     this.setState({
       submitting: false,

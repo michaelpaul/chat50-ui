@@ -3,6 +3,7 @@ import { getChannels, getMessages, postMessage } from './api';
 const mockResponse = (response) => {
     jest.spyOn(global, 'fetch').mockImplementation(() =>
         Promise.resolve({
+            ok: true,
             json: () => Promise.resolve(response)
         })
     );
@@ -36,7 +37,7 @@ test('post message', async () => {
     const message = { id: 128, body: 'foo' };
     mockResponse(message);
 
-    expect(await postMessage('Hello, World!', 'JWT')).toBe(message);
+    expect(await postMessage('Week 0', 'Hello, World!', 'JWT')).toBe(message);
 
     global.fetch.mockRestore();
 });
