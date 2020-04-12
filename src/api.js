@@ -1,3 +1,18 @@
+export const login = async (token) => {
+    try {
+        const response = await fetch('http://localhost:5000/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 export const getChannels = async () => {
     try {
         const response = await fetch('http://localhost:5000/api/channels');

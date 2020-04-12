@@ -6,7 +6,7 @@ import Profile from './Profile';
 import MessageList from './MessageList';
 import ChannelList from './ChannelList';
 import Editor from './Editor';
-import { getChannels, getMessages, postMessage } from "./api";
+import * as api from "./api";
 
 import { BorderlessTableOutlined } from "@ant-design/icons";
 import './App.css';
@@ -26,7 +26,7 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    getChannels().then(channels => {
+    api.getChannels().then(channels => {
       this.setState({ channels });
       const [first] = channels;
       if (first) {
@@ -40,6 +40,7 @@ class App extends React.Component {
     this.setState({ auth });
 
     if (isAuthenticated) {
+      api.login(await this.state.auth.getAuthToken());
       this.setState({
         isAuthenticated: true,
         user: await auth.getCurrentUser()
@@ -64,7 +65,7 @@ class App extends React.Component {
       submitting: true
     });
 
-    await postMessage(
+    await api.postMessage(
       this.state.currentChannel.key,
       this.state.value,
       await this.state.auth.getAuthToken()
@@ -86,7 +87,7 @@ class App extends React.Component {
     const [currentChannel] = this.state.channels.filter(it => it.key === key);
     if (currentChannel) {
       this.setState({ currentChannel });
-      getMessages(currentChannel.key).then(messages => this.setState({ messages }));
+      api.getMessages(currentChannel.key).then(messages => this.setState({ messages }));
     }
   }
 
