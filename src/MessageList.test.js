@@ -15,37 +15,17 @@ test('renders messages', () => {
             author: "Squall",
             avatar: "/8.png",
             body: 'Did you see Rinoa?',
-            datetime: 'few sencods ago'
+            datetime: "2020-04-15T19:24:01.910164Z"
         },
         {
             author: "Cloud",
             avatar: "/7.png",
             body: 'Not interested.',
-            datetime: 'right after'
+            datetime: "2020-04-15T19:24:04.123456Z"
         }
     ];
     const { getByText } = render(<MessageList comments={comments} />);
 
     expect(getByText('Rinoa?', { exact: false })).toBeTruthy();
     expect(getByText(/interested/)).toBeTruthy();
-});
-
-test('hide avatar in sequence', () => {
-    const comments = [
-        {
-            author: "Squall",
-            avatar: "/8.png",
-            content: 'Did you see Rinoa?',
-            datetime: 'few sencods ago'
-        },
-        {
-            author: "Squall",
-            avatar: "/9.png",
-            content: 'Please?',
-            datetime: 'right after'
-        }
-    ];
-    const { getAllByAltText } = render(<MessageList comments={comments} />);
-
-    expect(getAllByAltText('Author Avatar')[1]).not.toBeVisible();
 });

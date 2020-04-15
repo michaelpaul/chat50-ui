@@ -1,5 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
+import io from 'socket.io-client';
 
 import { configureClient, Auth } from './auth';
 import Profile from './Profile';
@@ -38,6 +39,18 @@ class App extends React.Component {
     const auth = new Auth(client);
     const isAuthenticated = await auth.authenticate();
     this.setState({ auth });
+
+    const socket = io('http://localhost:5000');
+    socket.on('chat50.message', (message) => {
+      if (!this.state.currentChannel ||
+        message.channel !== this.state.currentChannel.key) {
+        return;
+      }
+
+      this.setState({
+        messages: [...this.state.messages, message]
+      });
+    });
 
     if (isAuthenticated) {
       api.login(await this.state.auth.getAuthToken());
