@@ -27,38 +27,38 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    api.getChannels().then(channels => {
-      this.setState({ channels });
-      const [first] = channels;
-      if (first) {
-        this.handleOpenChannel(first.key);
-      }
-    });
-
     const client = await configureClient();
     const auth = new Auth(client);
-    const isAuthenticated = await auth.authenticate();
-    this.setState({ auth });
-
     const socket = io('http://localhost:5000');
-    socket.on('chat50.message', (message) => {
-      if (!this.state.currentChannel ||
-        message.channel !== this.state.currentChannel.key) {
-        return;
-      }
+    const channels = await api.getChannels();
 
-      this.setState({
-        messages: [...this.state.messages, message]
-      });
-    });
+    this.setState({ auth, socket, channels });
 
-    if (isAuthenticated) {
+    const [first] = channels;
+    if (first) {
+      this.handleOpenChannel(first.key);
+    }
+
+    socket.on('chat50.message', this.onChatMessage);
+
+    if (await auth.authenticate()) {
       api.login(await this.state.auth.getAuthToken());
       this.setState({
         isAuthenticated: true,
         user: await auth.getCurrentUser()
       });
     }
+  }
+
+  onChatMessage = (message) => {
+    const { currentChannel } = this.state;
+    if (!currentChannel || message.channel !== currentChannel.key) {
+      return;
+    }
+
+    this.setState({
+      messages: [...this.state.messages, message]
+    });
   }
 
   handleLogin = async () => {
@@ -98,10 +98,13 @@ class App extends React.Component {
 
   handleOpenChannel = (key) => {
     const [currentChannel] = this.state.channels.filter(it => it.key === key);
-    if (currentChannel) {
-      this.setState({ currentChannel });
-      api.getMessages(currentChannel.key).then(messages => this.setState({ messages }));
+    if (!currentChannel) {
+      return;
     }
+    api.getMessages(currentChannel.key).then(messages => {
+      this.state.socket.emit('chat50.join', { channel: currentChannel.key });
+      this.setState({ currentChannel, messages });
+    });
   }
 
   render() {
