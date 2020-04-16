@@ -129,9 +129,7 @@ class App extends React.Component {
               <BorderlessTableOutlined /> {currentChannel ? currentChannel.name : 'Select a channel from the sidebar'}
             </Header>
             <Content style={{ margin: "24px 16px 0", overflow: "scroll" }}>
-              <div style={{ padding: 24, background: "#fff" }}>
                 <MessageList comments={messages} />
-              </div>
             </Content>
             <Footer>
               <Editor
