@@ -1,5 +1,7 @@
-# Chat50 UI &middot; ![Node.js CI](https://github.com/michaelpaul/chat50-ui/workflows/Node.js%20CI/badge.svg)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/michaelpaul/chat50-ui) 
+![Node.js CI](https://github.com/michaelpaul/chat50-ui/workflows/Node.js%20CI/badge.svg)
 
+# Chat50 UI
 Chat User Interface based on React. 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
