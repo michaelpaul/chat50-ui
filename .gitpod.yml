@@ -1,0 +1,8 @@
+tasks:
+  - init: npm install
+    command: npm run start
+  - command: echo npm run test
+    openMode: split-right
+ports:
+  - port: 3000
+    onOpen: open-preview
