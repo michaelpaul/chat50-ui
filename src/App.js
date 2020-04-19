@@ -1,15 +1,15 @@
 import React from 'react';
-import { Layout } from 'antd';
 import io from 'socket.io-client';
+import { Layout } from 'antd';
+import { BorderlessTableOutlined } from "@ant-design/icons";
 
+import { API_URL } from './config';
 import { configureClient, Auth } from './auth';
+import * as api from "./api";
 import Profile from './Profile';
 import MessageList from './MessageList';
 import ChannelList from './ChannelList';
 import Editor from './Editor';
-import * as api from "./api";
-
-import { BorderlessTableOutlined } from "@ant-design/icons";
 import './App.css';
 
 const { Content, Sider, Header, Footer } = Layout;
@@ -29,7 +29,7 @@ class App extends React.Component {
   async componentDidMount() {
     const client = await configureClient();
     const auth = new Auth(client);
-    const socket = io('http://localhost:5000');
+    const socket = io(API_URL);
     const channels = await api.getChannels();
 
     this.setState({ auth, socket, channels });

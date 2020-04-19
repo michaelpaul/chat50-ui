@@ -1,6 +1,8 @@
+import { API_URL } from './config';
+
 export const login = async (token) => {
     try {
-        const response = await fetch('http://localhost:5000/api/login', {
+        const response = await fetch(`${API_URL}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -15,7 +17,7 @@ export const login = async (token) => {
 
 export const getChannels = async () => {
     try {
-        const response = await fetch('http://localhost:5000/api/channels');
+        const response = await fetch(`${API_URL}/api/channels`);
         if (!response.ok) {
             throw new Error('Failed to load channels');
         }
@@ -27,7 +29,7 @@ export const getChannels = async () => {
 };
 
 export const getMessages = async (channel) => {
-    const response = await fetch(`http://localhost:5000/api/messages/${channel}`);
+    const response = await fetch(`${API_URL}/api/messages/${channel}`);
     return await response.json();
 };
 
@@ -37,7 +39,7 @@ export const postMessage = async (channel, message, token) => {
             channel,
             message
         };
-        const response = await fetch('http://localhost:5000/api/messages', {
+        const response = await fetch(`${API_URL}/api/messages`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
