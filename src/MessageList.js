@@ -2,11 +2,11 @@ import React, { useRef, useEffect } from 'react';
 import { Avatar, Comment, List } from 'antd';
 import moment from 'moment';
 
-const MessageList = ({ comments }) => {
+const MessageList = ({ comments=[] }) => {
     const listRef = useRef();
 
     useEffect(() => {
-        if (!listRef.current) {
+        if (typeof listRef.current.scrollIntoView === 'undefined') {
             return;
         }
         listRef.current.scrollIntoView({

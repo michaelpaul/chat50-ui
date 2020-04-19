@@ -2,8 +2,8 @@ import React from 'react';
 import { Menu } from 'antd';
 import { BorderlessTableOutlined } from "@ant-design/icons";
 
-const ChannelList = ({ channels = [], onOpen }) => (
-    <Menu theme="dark" mode="inline" onClick={({ key }) => onOpen(key)}>
+const ChannelList = ({ channels = [], selected, onOpen }) => (
+    <Menu theme="dark" mode="inline" selectedKeys={[selected]} onClick={({ key }) => onOpen(key)}>
         {0 === channels.length ? <Menu.Item>Loading channels...</Menu.Item> : '' }
         {channels.map(({key, name}) => (
             <Menu.Item key={key}>

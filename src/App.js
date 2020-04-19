@@ -122,7 +122,7 @@ class App extends React.Component {
             }}
           >
             <Profile user={this.state.user} isAuthenticated={this.state.isAuthenticated} onLogin={this.handleLogin} onLogout={this.handleLogout} />
-            <ChannelList channels={this.state.channels} onOpen={this.handleOpenChannel} />
+            <ChannelList channels={this.state.channels} selected={currentChannel ? currentChannel.key : ''} onOpen={this.handleOpenChannel} />
           </Sider>
           <Layout style={{ marginLeft: 200, height: "100vh" }}>
             <Header style={{ background: "#fff" }}>
