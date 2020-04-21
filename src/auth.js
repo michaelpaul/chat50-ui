@@ -1,5 +1,5 @@
 import createAuth0Client from '@auth0/auth0-spa-js';
-import authConfig from './auth_config.json';
+import { AUTH_CONFIG as authConfig } from './config';
 
 export const configureClient = async () => await createAuth0Client({
   domain: authConfig.domain,
