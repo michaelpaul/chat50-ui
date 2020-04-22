@@ -3,8 +3,12 @@ import { Avatar, Row, Col } from 'antd';
 import { UserOutlined } from "@ant-design/icons";
 
 export default class Profile extends React.Component {
+    isAuthenticated() {
+        return this.props.user ? true : false;
+    }
+
     handleClick = () => {
-        if (this.props.isAuthenticated) {
+        if (this.isAuthenticated()) {
             this.props.onLogout();
         } else {
             this.props.onLogin();
@@ -12,7 +16,7 @@ export default class Profile extends React.Component {
     }
 
     render() {
-        const isAuthenticated = this.props.isAuthenticated;
+        const isAuthenticated = this.isAuthenticated();
         return (
             <Row style={{ padding: "12px", height: "64px" }}>
                 <Col span={6}>
@@ -26,7 +30,7 @@ export default class Profile extends React.Component {
                     <p style={{ color: "white" }}>
                         {isAuthenticated ? this.props.user.name : "Guest"}
                         <br />
-                        <a href="/" onClick={this.handleClick}>{isAuthenticated ? "Logout" : "Login"}</a>
+                        <a href="/" onClick={this.handleClick}>{isAuthenticated ? "Logout" : "Login / Sign Up"}</a>
                     </p>
                 </Col>
             </Row>

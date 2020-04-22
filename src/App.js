@@ -21,7 +21,6 @@ class App extends React.Component {
     messages: [],
     submitting: false,
     value: "",
-    isAuthenticated: false,
     user: null,
     auth: null
   }
@@ -44,7 +43,6 @@ class App extends React.Component {
     if (await auth.authenticate()) {
       api.login(await this.state.auth.getAuthToken());
       this.setState({
-        isAuthenticated: true,
         user: await auth.getCurrentUser()
       });
     }
@@ -70,7 +68,7 @@ class App extends React.Component {
   }
 
   handleSubmit = async () => {
-    if (!this.state.value) {
+    if (!this.state.user || !this.state.value) {
       return;
     }
 
@@ -121,7 +119,7 @@ class App extends React.Component {
               left: 0
             }}
           >
-            <Profile user={this.state.user} isAuthenticated={this.state.isAuthenticated} onLogin={this.handleLogin} onLogout={this.handleLogout} />
+            <Profile user={this.state.user} onLogin={this.handleLogin} onLogout={this.handleLogout} />
             <ChannelList channels={this.state.channels} selected={currentChannel ? currentChannel.key : ''} onOpen={this.handleOpenChannel} />
           </Sider>
           <Layout style={{ marginLeft: 200, height: "100vh" }}>
@@ -131,6 +129,7 @@ class App extends React.Component {
             <Content style={{ margin: "24px 16px 0", overflow: "scroll" }}>
                 <MessageList comments={messages} />
             </Content>
+            {this.state.user && 
             <Footer>
               <Editor
                 onChange={this.handleChange}
@@ -138,7 +137,7 @@ class App extends React.Component {
                 submitting={submitting}
                 value={value}
               />
-            </Footer>
+            </Footer>}
           </Layout>
         </Layout>
       </div>
