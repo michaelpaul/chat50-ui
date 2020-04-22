@@ -12,7 +12,7 @@ test('renders', () => {
         name: 'pset2'
     }];
     const { getByText } = render(<ChannelList channels={channels} />);
-    
+
     expect(getByText('pset1')).toBeTruthy();
     expect(getByText('pset2')).toBeTruthy();
 });

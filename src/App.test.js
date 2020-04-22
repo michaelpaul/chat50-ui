@@ -7,9 +7,9 @@ jest.mock('./auth');
 jest.mock('socket.io-client');
 
 test('renders as guest', () => {
-  io.mockReturnValue({ on: jest.fn() });
+    io.mockReturnValue({ on: jest.fn() });
 
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/Login/i);
-  expect(linkElement).toBeInTheDocument();
+    const { getByText } = render(<App />);
+    const linkElement = getByText(/Login/i);
+    expect(linkElement).toBeInTheDocument();
 });

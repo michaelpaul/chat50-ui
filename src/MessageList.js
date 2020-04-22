@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { Avatar, Comment, List } from 'antd';
 import moment from 'moment';
 
-const MessageList = ({ comments=[] }) => {
+const MessageList = ({ comments = [] }) => {
     const listRef = useRef();
 
     useEffect(() => {
@@ -10,8 +10,8 @@ const MessageList = ({ comments=[] }) => {
             return;
         }
         listRef.current.scrollIntoView({
-            block: 'end', 
-            inline: 'nearest', 
+            block: 'end',
+            inline: 'nearest',
             behavior: 'smooth'
         });
     }, [comments.length]);
