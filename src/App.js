@@ -130,7 +130,7 @@ class App extends React.Component {
                             <MessageList comments={messages} />
                         </Content>
                         {this.state.user &&
-                            <Footer>
+                            <Footer style={{ padding: '12px 16px' }}>
                                 <Editor
                                     onChange={this.handleChange}
                                     onSubmit={this.handleSubmit}
