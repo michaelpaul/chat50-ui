@@ -20,10 +20,11 @@ test('trigger change', () => {
 
 test('trigger submit', () => {
     const onSubmit = jest.fn();
-    const { getByTitle } = render(<Editor onSubmit={onSubmit} />);
-    const button = getByTitle('Send');
+    const { getByPlaceholderText } = render(<Editor onSubmit={onSubmit} />);
+    const input = getByPlaceholderText('Your message');
 
-    fireEvent.click(button);
+    fireEvent.change(input, { target: { value: 'send le form' } });
+    fireEvent.submit(input, { bubbles: true });
 
     expect(onSubmit).toHaveBeenCalled();
 });
