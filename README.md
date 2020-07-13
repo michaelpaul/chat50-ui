@@ -4,7 +4,7 @@
 # Chat50 UI
 Chat User Interface based on React. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Demo](demo.png)
 
 ## Available Scripts
 
