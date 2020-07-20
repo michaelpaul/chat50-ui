@@ -6,6 +6,8 @@ Chat User Interface based on React.
 
 ![Demo](demo.png)
 
+Checkout the server at: https://github.com/michaelpaul/chat50-server
+
 ## Available Scripts
 
 In the project directory, you can run:
